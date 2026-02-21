@@ -21,6 +21,8 @@ It is well suited for:
 
 The recommended starting point is the pre-configured [Grav Helios Course Hub Skeleton](https://github.com/paulhibbitts/grav-skeleton-helios-course-hub), which includes this plugin, demo content, and all required configuration out of the box.
 
+The skeleton defaults to a **single-course setup** — the top-level folders in `user/pages/` are pre-configured and ready to use.
+
 To install the plugin manually, see the [Installation](#installation) and [Demo Content](#demo-content) sections below.
 
 ## Demo Content
