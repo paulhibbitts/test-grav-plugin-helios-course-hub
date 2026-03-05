@@ -1,0 +1,65 @@
+{% extends helios_base_simple %}
+
+{% block content %}
+    {# Page header #}
+    <header class="mb-8 pb-8 border-b border-gray-200 dark:border-gray-800">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {{ page.title }}
+        </h1>
+        {% if page.header.description %}
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+            {{ page.header.description }}
+        </p>
+        {% endif %}
+    </header>
+
+    {# Split page content above/below course list using === delimiter #}
+    {% set raw = page.rawMarkdown() %}
+    {% if '===' in raw %}
+        {% set parts = raw|split('===') %}
+        {% set content_above = parts[0]|markdown %}
+        {% set content_below = parts[1]|markdown %}
+    {% else %}
+        {% set content_above = page.content %}
+        {% set content_below = null %}
+    {% endif %}
+
+    {# Page content above course list #}
+    {% if content_above|trim %}
+        <article class="prose prose-lg dark:prose-invert max-w-none mb-8">
+            {{ content_above|raw }}
+        </article>
+    {% endif %}
+
+    {# Auto-generated course cards from version folders #}
+    {% if helios_version_info.versions is defined and helios_version_info.versions|length > 0 %}
+    {% set colClass = {
+        1: 'grid-cols-1',
+        2: 'sm:grid-cols-2',
+        3: 'sm:grid-cols-2 lg:grid-cols-3',
+        4: 'sm:grid-cols-2 lg:grid-cols-4'
+    } %}
+    <div class="grid gap-4 mb-8 {{ colClass[page.header.cards_per_row|default(1)] ?? 'grid-cols-1' }}">
+        {% for version in helios_version_info.versions %}
+            {# Find the version's root page for icon/description; skip non-visible courses #}
+            {% set version_page = pages.find('/' ~ version.id) %}
+            {% set version_home = version_page ? version_page.children.first() : null %}
+            {% if version_page %}
+                {% include 'partials/doc-card.html.twig' with {
+                    title: version.label,
+                    link: version_home ? version_home.url : version.url,
+                    icon: version_page.header.icon|default(page.header.card_icon),
+                    description: version_page.header.description|default(null)
+                } only %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Page content below course list #}
+    {% if content_below and content_below|trim %}
+        <article class="prose prose-lg dark:prose-invert max-w-none mt-8">
+            {{ content_below|raw }}
+        </article>
+    {% endif %}
+{% endblock %}

@@ -29,12 +29,58 @@ form:
       validate:
         type: bool
 
+    header_section:
+      type: section
+      title: 'Header'
+      underline: true
+
+    show_site_icon:
+      type: toggle
+      label: 'Show Site Logo Icon'
+      help: 'Show the icon square next to the Logo Text when no logo image is set.'
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    site_icon:
+      type: text
+      size: medium
+      label: 'Site Logo Icon'
+      help: 'Tabler icon path for the site logo icon square (e.g. tabler/book.svg). Only applies when Show Site Logo Icon is enabled. Leave empty to use the default icon.'
+      placeholder: 'tabler/book.svg'
+
+    logo_link_target:
+      type: select
+      label: 'Single Course Site Logo Link'
+      help: 'Choose where the site Logo Text and icon link navigates when only one course is listed.'
+      default: 'courses_list'
+      options:
+        courses_list: 'Courses Home Page (default)'
+        single_course: 'First Page of Only Listed Course'
+
+    integrations_section:
+      type: section
+      title: 'Integrations'
+      underline: true
+
+    github_server:
+      type: radio
+      label: 'Git Server for Helios GitHub Integration'
+      default: 'github.com'
+      help: 'Only required when GitHub Integration is enabled in the Helios theme settings.'
+      options:
+        'github.com': GitHub
+        'codeberg.org': Codeberg
+
     h5pembedrootpath:
       type: text
       size: long
       label: 'H5P Content Embed Source URL'
       default: 'https://h5p.org/h5p/embed/'
-      help: 'Enter the embed source URL path up to, but not including, the H5P Content ID.'
       description: 'H5P embed source URL path up to, but not including, the Content ID. For example, ''https://h5p.org/h5p/embed/'' or ''https://yourorganization.h5p.com/content/''.'
       validate:
         type: url
